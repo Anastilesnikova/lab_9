@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.topic3.android.reddit.R
+import com.topic3.android.reddit.components.BackgroundText
 import com.topic3.android.reddit.models.SubredditModel
 
 val subreddits = listOf(
@@ -68,7 +69,24 @@ val communities = listOf(
 
 @Composable
 fun SubredditsScreen(modifier: Modifier = Modifier) {
-    //TODO add your code here
+    Column (
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
+        Text(
+            modifier = modifier.padding(16.dp),
+            text = stringResource(R.string.recently_visited_subreddits),
+            fontSize = 12.sp,
+            style = MaterialTheme.typography.subtitle1
+        )
+
+        LazyRow(
+            modifier = modifier.padding(end = 16.dp)
+        ) {
+            items(subreddits) { Subreddit(it) }
+        }
+        Communities(modifier)
+    }
 }
 
 @Composable
@@ -190,9 +208,13 @@ fun SubredditDescription(modifier: Modifier, @StringRes descriptionStringRes: In
 }
 
 @Composable
-fun Community(text: String, modifier: Modifier = Modifier) {
+fun Community(
+    text: String,
+    modifier: Modifier = Modifier,
+    onCommunityClicked: () -> Unit = {}
+) {
     Row (modifier = modifier
-        .padding(start = 16.dp)
+        .padding(start = 16.dp, top = 16.dp)
         .fillMaxWidth()
         .clickable { onCommunityClicked.invoke() }
     ) {
